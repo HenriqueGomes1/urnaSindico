@@ -6,7 +6,7 @@ public class VotacaoUrna {
 
     public static void main(String[] args) {
         
-        //Armazena dados candidados
+        //Armazena candidados
         List<String> nomesCandidatos = new ArrayList<>();
         List<Integer> numerosCandidatos = new ArrayList<>();
         List<Integer> votosCandidatos = new ArrayList<>();
@@ -15,10 +15,10 @@ public class VotacaoUrna {
 
         do {
             System.out.println("\n--- Sistema de Votação para Síndico ---");
-            System.out.println("1. Cadastrar candidato");
-            System.out.println("2. Realizar votação");
+            System.out.println("1. Cadastrar candidato.");
+            System.out.println("2. Realizar votação.");
             System.out.println("3. Ver resultados");
-            System.out.println("4. Sair");
+            System.out.println("4. Sair.");
             System.out.print("Escolha uma opção: ");
             escolha = scanner.nextLine();
 
@@ -26,9 +26,9 @@ public class VotacaoUrna {
                 case "1":
                     //Cadastramento candidatos
                     System.out.println("\n--- Cadastro de Candidato ---");
-                    System.out.print("Digite o nome do candidato: ");
+                    System.out.print("Digite o nome do seu candidato: ");
                     String nome = scanner.nextLine();
-                    System.out.print("Digite o número do candidato: ");
+                    System.out.print("Digite o número do seu candidato: ");
                     int numero = Integer.parseInt(scanner.nextLine());
 
                     if (numerosCandidatos.contains(numero)) {
@@ -40,6 +40,7 @@ public class VotacaoUrna {
                         System.out.println("Candidato " + nome + " cadastrado com sucesso!");
                     }
                     break;
+
                 case "2":
                     //Votação
                     System.out.println("\n--- Votação ---");
@@ -65,6 +66,7 @@ public class VotacaoUrna {
                         System.out.println("Número de candidato inválido. Por favor, vote em um número da lista.");
                     }
                     break;
+
                 case "3":
                     //Resultado
                     System.out.println("\n--- Resultado da Votação ---");
@@ -80,8 +82,31 @@ public class VotacaoUrna {
                         break;
                     }
 
-                    int maiorVoto = -1;
-                    String vencedor = "N/A";
+                    //Loop de organizar essa bagaça
+                    for (int i = 0; i < votosCandidatos.size() - 1; i++) {
+                        for (int j = i + 1; j < votosCandidatos.size(); j++) {
+                            if (votosCandidatos.get(j) > votosCandidatos.get(i)) {
+                                // Troca votos
+                                int tempVotos = votosCandidatos.get(i);
+                                votosCandidatos.set(i, votosCandidatos.get(j));
+                                votosCandidatos.set(j, tempVotos);
+
+                                // Troca nomes
+                                String tempNome = nomesCandidatos.get(i);
+                                nomesCandidatos.set(i, nomesCandidatos.get(j));
+                                nomesCandidatos.set(j, tempNome);
+
+                                // Troca números
+                                int tempNumero = numerosCandidatos.get(i);
+                                numerosCandidatos.set(i, numerosCandidatos.get(j));
+                                numerosCandidatos.set(j, tempNumero);
+                            }
+                        }
+                    }
+                    // -----------------------------------------------------
+
+                    int maiorVoto = votosCandidatos.get(0);
+                    String vencedor = nomesCandidatos.get(0);
                     
                     System.out.println("----------------------------------------");
                     System.out.println("Candidatos e Votos:");
@@ -94,20 +119,17 @@ public class VotacaoUrna {
 
                         System.out.printf("Nome: %s | Votos: %d | Porcentagem: %.2f%%%n", 
                                           nomeCandidato, votos, porcentagem);
-
-                        if (votos > maiorVoto) {
-                            maiorVoto = votos;
-                            vencedor = nomeCandidato;
-                        }
                     }
                     
                     System.out.println("----------------------------------------");
-                    System.out.println("Vencedor: " + vencedor);
+                    System.out.println("Vencedor dos votos é: " + vencedor + ", parabéns!!");
                     System.out.println("----------------------------------------");
                     break;
+
                 case "4":
-                    System.out.println("Saindo do sistema. Obrigado por usar!");
+                    System.out.println("Saindo do sistema...");
                     break;
+
                 default:
                     System.out.println("Opção inválida. Por favor, escolha uma opção de 1 a 4.");
             }
